@@ -11,7 +11,7 @@ public class IncrementingArrayList<E> extends AbstractSequencedIncrementingArray
     private final List<E[]> rows;
 
     public IncrementingArrayList() {
-         rows = new ArrayList<>();
+        rows = new ArrayList<>();
         CAPACITY_PER_ROW = DEFAULT_BUCKET_CAPACITY;
     }
 
@@ -58,6 +58,12 @@ public class IncrementingArrayList<E> extends AbstractSequencedIncrementingArray
 
         int row = index / CAPACITY_PER_ROW;
         int col = index % CAPACITY_PER_ROW;
+
+        E[] elements = rows.get(row);
+        if (elements == null) {
+            elements = (E[]) new Object[CAPACITY_PER_ROW];
+            rows.add(row, elements);
+        }
         rows.get(row)[col] = convertItem(o);
         incrementSize();
         return true;
